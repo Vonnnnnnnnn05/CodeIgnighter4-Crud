@@ -30,10 +30,6 @@ class ProductController extends BaseController
     }
 
     // Show create form
-    public function createv()
-    {
-        return view('create_view');
-    }
 
     // Save product to DB
     public function store()

@@ -43,11 +43,8 @@
 </style>
 <body class="bg-light">
     <h1 class="text-center mt-5">Products Overview</h1>
-    <form action="<?= base_url('/') ?>" method="get" class="d-flex  mb-3  w-25 h-50 p-2 rounded mx-auto">
-    <input type="text" name="keyword" value="<?= esc($keyword ?? '') ?>" 
-           class="form-control" placeholder="Search product...">
-    <button type="submit" class="btn btn-outline-dark"><i class="bi bi-search"></i> Search</button>
-</form>
+    
+
 
 
     <div class="container mt-5">
