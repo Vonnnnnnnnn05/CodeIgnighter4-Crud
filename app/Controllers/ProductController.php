@@ -4,11 +4,28 @@ use App\Models\ProductModel;
 
 class ProductController extends BaseController
 {
-    // Show all products
+    // Show all products with search
     public function index()
     {
         $productModel = new ProductModel();
-        $data['products'] = $productModel->findAll();
+
+        // Get search keyword from query string (?keyword=...)
+        $keyword = $this->request->getGet('keyword');
+
+        if ($keyword) {
+            // Search by product_name or description
+            $products = $productModel->like('product_name', $keyword)
+                                     ->orLike('description', $keyword)
+                                     ->findAll();
+        } else {
+            $products = $productModel->findAll();
+        }
+
+        $data = [
+            'products' => $products,
+            'keyword'  => $keyword
+        ];
+
         return view('product_view', $data);
     }
 
@@ -23,21 +40,20 @@ class ProductController extends BaseController
     {
         $productModel = new ProductModel();
 
-       
         $data = [
             'product_name' => $this->request->getPost('product_name'),
             'description'  => $this->request->getPost('description'),
             'price'        => $this->request->getPost('price'),
         ];
 
-       
         $productModel->insert($data);
-// Controller
-session()->setFlashdata('message', 'Successfully Inserted!');
-return redirect()->to(base_url('/'));
 
-}
- public function update($id)
+        session()->setFlashdata('message', 'Successfully Inserted!');
+        return redirect()->to(base_url('/'));
+    }
+
+    // Update product
+    public function update($id)
     {
         $productModel = new ProductModel();
 
@@ -52,7 +68,9 @@ return redirect()->to(base_url('/'));
         session()->setFlashdata('message', 'Product updated successfully!');
         return redirect()->to(base_url('/'));
     }
-      public function delete($id)
+
+    // Delete product
+    public function delete($id)
     {
         $productModel = new ProductModel();
         $productModel->delete($id);
