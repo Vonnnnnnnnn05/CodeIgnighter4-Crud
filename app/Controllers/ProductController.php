@@ -4,7 +4,7 @@ use App\Models\ProductModel;
 
 class ProductController extends BaseController
 {
-    // Show all products with search
+    // Show all products with search and pagination
     public function index()
     {
         $productModel = new ProductModel();
@@ -13,16 +13,17 @@ class ProductController extends BaseController
         $keyword = $this->request->getGet('keyword');
 
         if ($keyword) {
-            // Search by product_name or description
+            // Search by product_name or description with pagination
             $products = $productModel->like('product_name', $keyword)
                                      ->orLike('description', $keyword)
-                                     ->findAll();
+                                     ->paginate(5); // 5 items per page
         } else {
-            $products = $productModel->findAll();
+            $products = $productModel->paginate(5); // 5 items per page
         }
 
         $data = [
             'products' => $products,
+            'pager'    => $productModel->pager,
             'keyword'  => $keyword
         ];
 

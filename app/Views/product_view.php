@@ -64,7 +64,16 @@
         <div class="card shadow-sm border-0">
             <div class="card-body">
                 <h5 class="card-title mb-2"><i class="bi bi-box-seam"></i></h5>
-                <h1 class="display-6 mb-0 text-dark"><?= isset($products) ? count($products) : 0 ?></h1>
+                <h1 class="display-6 mb-0 text-dark">
+                    <?php 
+                        if (isset($pager)) {
+                            $details = $pager->getDetails();
+                            echo $details['total'];
+                        } else {
+                            echo isset($products) ? count($products) : 0;
+                        }
+                    ?>
+                </h1>
                 <span class="text-muted">Total Products</span>
             </div>
         </div>
@@ -77,7 +86,13 @@
                 <h5 class="card-title mb-2"><i class="bi bi-graph-up"></i></h5>
                 <p class="mb-0 fs-6">
                     <?php
-                        $count = isset($products) ? count($products) : 0;
+                        if (isset($pager)) {
+                            $details = $pager->getDetails();
+                            $count = $details['total'];
+                        } else {
+                            $count = isset($products) ? count($products) : 0;
+                        }
+                        
                         if ($count === 0) {
                             echo "No products yet.";
                         } elseif ($count < 5) {
@@ -135,7 +150,7 @@
         <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header bg-secondary text-white">
+                    <div class="modal-header bg-light text-dark">
                         <h5 class="modal-title" id="addProductModalLabel"><i class="bi bi-plus"></i> Add New Product</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -252,6 +267,30 @@
                 <?php endif; ?>
             </tbody>
         </table>
+        
+        <!-- Bootstrap Pagination -->
+        <?php if (isset($pager) && $pager->getPageCount() > 1) : ?>
+            <div class="d-flex justify-content-center mt-4">
+                <?= $pager->links('default', 'bootstrap_pagination') ?>
+            </div>
+        <?php endif; ?>
+        
+        <!-- Pagination Info -->
+        <?php if (isset($pager)) : ?>
+            <div class="d-flex justify-content-center mt-2">
+                <small class="text-muted">
+                    <?php
+                        $details = $pager->getDetails();
+                        $currentPage = $details['currentPage'];
+                        $perPage = $details['perPage'];
+                        $total = $details['total'];
+                        $firstItem = (($currentPage - 1) * $perPage) + 1;
+                        $lastItem = min($currentPage * $perPage, $total);
+                    ?>
+                    Showing <?= $firstItem ?> to <?= $lastItem ?> of <?= $total ?> products
+                </small>
+            </div>
+        <?php endif; ?>
     </div>
     <?php if (session()->getFlashdata('message')): ?>
         <script>
