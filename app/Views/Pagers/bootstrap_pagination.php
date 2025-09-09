@@ -1,3 +1,31 @@
+<style>
+    .pagination .page-link {
+    color: #212529;
+    border: 1px solid #212529;
+    background-color: transparent;
+}
+
+.pagination .page-link:hover {
+    color: #fff;
+    background-color: #212529;
+    border-color: #212529;
+}
+
+.pagination .page-link:focus {
+    color: #fff;
+    background-color: #000;
+    border-color: #000;
+    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.25);
+}
+
+.pagination .page-item.active .page-link {
+    color: #fff;
+    background-color: #212529;
+    border-color: #212529;
+}
+
+</style>
+
 <?php $pager->setSurroundCount(2) ?>
 
 <nav aria-label="<?= lang('Pager.pageNavigation') ?>">

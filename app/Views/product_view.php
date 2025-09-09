@@ -35,6 +35,7 @@
     .no-print {
         display: none !important;
     }
+    
 
 
 
@@ -135,10 +136,10 @@
 
         <!-- Search Bar -->
         <div class="row mb-4">
-            <div class="col-md-8">
+            <div class="col-md-8 ">
                 <form method="GET" action="<?= base_url('/') ?>" class="d-flex">
                     <div class="input-group">
-                        <input type="text" name="keyword" class="form-control" 
+                        <input type="text" name="keyword" class="form-dark w-75" 
                                placeholder="Search products by name or description..." 
                                value="<?= isset($keyword) ? esc($keyword) : '' ?>">
                         <button class="btn btn-outline-secondary" type="submit">
