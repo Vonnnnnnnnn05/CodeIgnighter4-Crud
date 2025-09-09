@@ -17,13 +17,22 @@ class ProductController extends BaseController
             $products = $productModel->like('product_name', $keyword)
                                      ->orLike('description', $keyword)
                                      ->paginate(5); // 5 items per page
+            
+            // Get total count for search results
+            $totalCount = $productModel->like('product_name', $keyword)
+                                      ->orLike('description', $keyword)
+                                      ->countAllResults();
         } else {
             $products = $productModel->paginate(5); // 5 items per page
+            
+            // Get total count of all products
+            $totalCount = $productModel->countAll();
         }
 
         $data = [
             'products' => $products,
             'pager'    => $productModel->pager,
+            'totalCount' => $totalCount,
             'keyword'  => $keyword
         ];
 

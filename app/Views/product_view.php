@@ -65,14 +65,7 @@
             <div class="card-body">
                 <h5 class="card-title mb-2"><i class="bi bi-box-seam"></i></h5>
                 <h1 class="display-6 mb-0 text-dark">
-                    <?php 
-                        if (isset($pager)) {
-                            $details = $pager->getDetails();
-                            echo $details['total'];
-                        } else {
-                            echo isset($products) ? count($products) : 0;
-                        }
-                    ?>
+                    <?= isset($totalCount) ? $totalCount : (isset($products) ? count($products) : 0) ?>
                 </h1>
                 <span class="text-muted">Total Products</span>
             </div>
@@ -86,12 +79,7 @@
                 <h5 class="card-title mb-2"><i class="bi bi-graph-up"></i></h5>
                 <p class="mb-0 fs-6">
                     <?php
-                        if (isset($pager)) {
-                            $details = $pager->getDetails();
-                            $count = $details['total'];
-                        } else {
-                            $count = isset($products) ? count($products) : 0;
-                        }
+                        $count = isset($totalCount) ? $totalCount : (isset($products) ? count($products) : 0);
                         
                         if ($count === 0) {
                             echo "No products yet.";
@@ -118,10 +106,19 @@
                     <?php
                         $today = date('Y-m-d');
                         $createdToday = 0;
-                        if (!empty($products)) {
-                            foreach ($products as $p) {
-                                if (date('Y-m-d', strtotime($p['created_at'])) === $today) {
-                                    $createdToday++;
+                        
+                        // Get all products created today from the database, not just current page
+                        try {
+                            $productModel = new \App\Models\ProductModel();
+                            $todaysProducts = $productModel->where('DATE(created_at)', $today)->findAll();
+                            $createdToday = count($todaysProducts);
+                        } catch (Exception $e) {
+                            // Fallback to current page products if database query fails
+                            if (!empty($products)) {
+                                foreach ($products as $p) {
+                                    if (date('Y-m-d', strtotime($p['created_at'])) === $today) {
+                                        $createdToday++;
+                                    }
                                 }
                             }
                         }
@@ -135,6 +132,34 @@
 
     
 </div>
+
+        <!-- Search Bar -->
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <form method="GET" action="<?= base_url('/') ?>" class="d-flex">
+                    <div class="input-group">
+                        <input type="text" name="keyword" class="form-control" 
+                               placeholder="Search products by name or description..." 
+                               value="<?= isset($keyword) ? esc($keyword) : '' ?>">
+                        <button class="btn btn-outline-secondary" type="submit">
+                            <i class="bi bi-search"></i> Search
+                        </button>
+                        <?php if (isset($keyword) && !empty($keyword)): ?>
+                            <a href="<?= base_url('/') ?>" class="btn btn-outline-danger">
+                                <i class="bi bi-x-circle"></i> Clear
+                            </a>
+                        <?php endif; ?>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-4">
+                <?php if (isset($keyword) && !empty($keyword)): ?>
+                    <div class="alert alert-info mb-0 py-2">
+                        <small><i class="bi bi-info-circle"></i> Found <?= $totalCount ?> result(s) for "<?= esc($keyword) ?>"</small>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
 
       <div class="d-flex justify-content-between align-items-center mb-3">
     <h2 class="print">Product List</h2>
@@ -300,6 +325,45 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Search Enhancement Script -->
+    <script>
+        // Focus on search input when page loads if there's a search term
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.querySelector('input[name="keyword"]');
+            const urlParams = new URLSearchParams(window.location.search);
+            const keyword = urlParams.get('keyword');
+            
+            // Auto-focus search input if there's no search term
+            if (!keyword && searchInput) {
+                searchInput.focus();
+            }
+            
+            // Add search on Enter key
+            if (searchInput) {
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        this.closest('form').submit();
+                    }
+                });
+            }
+        });
+        
+        // Add loading state to search button
+        document.querySelector('form').addEventListener('submit', function() {
+            const searchBtn = this.querySelector('button[type="submit"]');
+            const originalText = searchBtn.innerHTML;
+            searchBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Searching...';
+            searchBtn.disabled = true;
+            
+            // Re-enable after a short delay (in case of errors)
+            setTimeout(() => {
+                searchBtn.innerHTML = originalText;
+                searchBtn.disabled = false;
+            }, 3000);
+        });
+    </script>
 </body>
 
 </html>
