@@ -98,7 +98,7 @@ class ProductController extends BaseController
             session()->setFlashdata('error', 'Failed to add product. Please try again.');
         }
 
-        return redirect()->to(base_url('/'));
+        return redirect()->to(base_url('/dashboard'));
     }
 
     // Update product
@@ -158,7 +158,7 @@ class ProductController extends BaseController
             session()->setFlashdata('error', 'Failed to update product. Please try again.');
         }
 
-        return redirect()->to(base_url('/'));
+        return redirect()->to(base_url('/dashboard'));
     }
 
     // Delete product
@@ -168,6 +168,6 @@ class ProductController extends BaseController
         $productModel->delete($id);
 
         session()->setFlashdata('message', 'Product deleted successfully!');
-        return redirect()->to(base_url('/'));
+        return redirect()->to(base_url('/dashboard'));
     }
 }
