@@ -16,6 +16,14 @@ $routes->post('/register', 'AuthController::registerUser'); // Handle registrati
 $routes->post('/login', 'AuthController::login'); // Handle login
 $routes->get('/logout', 'AuthController::logout'); // Handle logout
 
+
+$routes->get('forgot-password', 'AuthController::forgotForm');
+$routes->post('forgot-password', 'AuthController::sendReset');
+$routes->get('reset-password', 'AuthController::resetForm');
+$routes->post('reset-password', 'AuthController::resetPassword');
+
+
+
 $routes->get('/dashboard', 'ProductController::index'); // Show all products
 $routes->post('products/store', 'ProductController::store');
 $routes->post('products/update/(:num)', 'ProductController::update/$1');

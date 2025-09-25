@@ -17,7 +17,7 @@ class App extends BaseConfig
      * E.g., http://example.com/
      */
     public string $baseURL = 'http://localhost/SI-CRUD/public/';
-
+    public string $encryptionKey = 'k3y_f0r_3ncrypt10n_@nd_h@sh1ng'; // set a strong key here for better security
     /**
      * Allowed Hostnames in the Site URL other than the hostname in the baseURL.
      * If you want to accept multiple Hostnames, set this.

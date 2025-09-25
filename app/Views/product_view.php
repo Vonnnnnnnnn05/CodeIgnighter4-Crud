@@ -164,6 +164,8 @@
     Swal.fire({
       icon: 'success',
       title: '<?= session()->getFlashdata('success') ?>',
+      width: 350,
+      padding: '1.25rem',
       showConfirmButton: false,
       timer: 2000
     });
@@ -203,7 +205,7 @@
         <div class="main-content flex-grow-1 p-4">
             <!-- Toggle button OUTSIDE the sidebar -->
             <button id="toggleSidebar" class="btn btn-outline-secondary toggle-btn">
-                <i class="bi bi-chevron-left"></i>
+                <i class="bi bi-file"></i>
             </button>
 
             <h1 class="text-center mt-5">Products Overview</h1>
@@ -633,7 +635,7 @@
                 mainContent.classList.toggle("expanded");
                 // swap icon
                 const icon = toggleBtn.querySelector('i');
-                if (icon) icon.className = isCollapsed ? 'bi bi-chevron-right' : 'bi bi-chevron-left';
+                if (icon) icon.className = isCollapsed ? 'bi bi-chevron-right' : 'bi bi-file';
                 // aria
                 toggleBtn.setAttribute('aria-expanded', String(!isCollapsed));
                 // persist

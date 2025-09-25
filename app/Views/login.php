@@ -62,7 +62,7 @@
                     </form>
                     <!-- Optional Links -->
                     <div class="mt-4 text-center">
-                        <a href="#" class="text-decoration-none small link-dark">Forgot password?</a><br>
+                        <a href="<?= base_url('forgot-password') ?>" class="text-decoration-none small link-dark">Forgot password?</a><br>
                         <a href="#" class="text-decoration-none small link-dark">No Account? <a href="<?php echo base_url('/register'); ?>" class="link-dark text-decoration-underline small">Register</a> </a>
                     </div>
                 </div>
@@ -83,6 +83,8 @@
                     icon: 'success',
                     title: 'Registered Successfully',
                     text: <?= json_encode(session()->getFlashdata('success')) ?>,
+                    width:620, 
+                    padding: '1em',
                     confirmButtonText: 'OK'
                 });
             <?php endif; ?>

@@ -137,11 +137,12 @@
         <div class="main-content flex-grow-1 p-4">
             <!-- Toggle button OUTSIDE the sidebar -->
             <button id="toggleSidebar" class="btn btn-outline-secondary toggle-btn">
-                <i class="bi bi-chevron-left"></i>
+                <i class="bi bi-file"></i>
             </button>
             <div class="d-flex">
 
             </div>
+            <h2 class="text-center mb-3">Products Card With Barcode</h2>
 
             <!-- Product cards -->
             <div class="container mt-4 text-center">
@@ -188,7 +189,7 @@
                 mainContent.classList.toggle("expanded");
                 // swap icon
                 const icon = toggleBtn.querySelector('i');
-                if (icon) icon.className = isCollapsed ? 'bi bi-chevron-right' : 'bi bi-chevron-left';
+                if (icon) icon.className = isCollapsed ? 'bi bi-chevron-right' : 'bi bi-file';
                 // aria
                 toggleBtn.setAttribute('aria-expanded', String(!isCollapsed));
                 // persist
