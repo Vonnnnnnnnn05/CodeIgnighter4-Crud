@@ -223,37 +223,40 @@ class AuthController extends BaseController
     }
 
     // Accept new password and update user
-    public function resetPassword()
-    {
-        $token = $this->request->getPost('token');
-        $password = $this->request->getPost('password');
-        $password_confirm = $this->request->getPost('password_confirm');
+   public function resetPassword()
+{
+    $token = $this->request->getPost('token');
+    $password = $this->request->getPost('password');
+    $password_confirm = $this->request->getPost('password_confirm');
 
-        if (!$token) {
-            return redirect()->to('/')->with('error', 'Invalid request.');
-        }
-
-        $valid = $this->validateResetToken($token);
-        if ($valid === false) {
-            return redirect()->to('/')->with('error', 'Reset link expired or invalid.');
-        }
-
-        // basic validation
-        if (empty($password) || strlen($password) < 6 || $password !== $password_confirm) {
-            return redirect()->back()->withInput()->with('error', 'Passwords must match and be at least 6 characters.');
-        }
-
-        $userModel = new UserModel();
-        $updated = $userModel->update($valid['user_id'], [
-            'password' => password_hash($password, PASSWORD_DEFAULT)
-        ]);
-
-        if ($updated === false) {
-            return redirect()->back()->with('error', 'Unable to update password. Try again.');
-        }
-
-        return redirect()->to('/')->with('success', 'Password updated. Please login.');
+    if (!$token) {
+        return redirect()->to('/')->with('error', 'Invalid request.');
     }
+
+    $valid = $this->validateResetToken($token);
+    if ($valid === false) {
+        return redirect()->to('/')->with('error', 'Reset link expired or invalid.');
+    }
+
+    // basic validation
+    if (empty($password) || strlen($password) < 6 || $password !== $password_confirm) {
+        return redirect()->back()->withInput()->with('error', 'Passwords must match and be at least 6 characters.');
+    }
+
+    $userModel = new UserModel();
+
+    // 🚀 DO NOT hash here, model will auto-hash
+    $updated = $userModel->update($valid['user_id'], [
+        'password' => $password
+    ]);
+
+    if ($updated === false) {
+        return redirect()->back()->with('error', 'Unable to update password. Try again.');
+    }
+
+    return redirect()->to('/')->with('success', 'Password updated. Please login.');
+}
+
 
     // Helper: validate token and return ['user_id'=>.., 'expires'=>..] or false
     private function validateResetToken(string $token)

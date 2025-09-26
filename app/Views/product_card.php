@@ -156,11 +156,14 @@
                                         <p class="card-text mb-3 text-muted" style="flex:0 0 auto;">
                                             <?= esc($p['description']) ?: '<span class="text-secondary">No description</span>' ?>
                                         </p>
+                                        <p class="card-text mb-3 text-muted" style="flex:0 0 auto;">
+                                            <?= esc($p['price']) ?: '<span class="text-secondary">No price</span>' ?>
+                                        </p>
                                         <div class="mt-auto">
                                             <svg id="pc-barcode-<?= $p['id'] ?>"></svg>
                                             <!-- View button (does not affect other behaviors) -->
                                             <div class="mt-3 text-center">
-                                                <button type="button" class="btn btn-sm btn-outline-dark view-btn" data-id="<?= esc($p['id']) ?>" data-name="<?= esc($p['product_name']) ?>" data-description="<?= esc($p['description']) ?>" data-created="<?= date('M d, Y', strtotime($p['created_at'])) ?>"><i class="bi bi-search"></i> View</button>
+                                                <button type="button" class="btn btn-sm btn-outline-dark view-btn" data-id="<?= esc($p['id']) ?>" data-name="<?= esc($p['product_name']) ?>" data-description="<?= esc($p['description']) ?>" data-created="<?= date('M d, Y', strtotime($p['created_at'])) ?>" data-price="<?= esc($p['price']) ?>"><i class="bi bi-search"></i> View</button>
                                             </div>
                                             <div class="small text-muted mt-2">Created: <?= date('M d, Y', strtotime($p['created_at'])) ?></div>
                                         </div>
@@ -241,6 +244,7 @@
                     <div class="modal-body text-center">
             <p><strong>Name:</strong> <span id="pc-modal-name"></span></p>
             <p><strong>Description:</strong> <span id="pc-modal-description"></span></p>
+            <p><strong>price:</strong> <span id="pc-modal-price"></span></p>
             <p><strong>Created:</strong> <span id="pc-modal-created"></span></p>
             <p><strong>ID:</strong> <span id="pc-modal-id"></span></p>
             <div class="text-center mt-3">
@@ -264,11 +268,13 @@
                 var name = t.getAttribute('data-name') || '';
                 var desc = t.getAttribute('data-description') || '';
                 var created = t.getAttribute('data-created') || '';
+                var price = t.getAttribute('data-price') || '';
 
                 document.getElementById('pc-modal-name').textContent = name;
                 document.getElementById('pc-modal-description').textContent = desc || 'No description';
                 document.getElementById('pc-modal-created').textContent = created;
                 document.getElementById('pc-modal-id').textContent = id;
+                document.getElementById('pc-modal-price').textContent = price || 'No price';
 
                 // generate barcode into shared modal svg (try/catch so it won't break)
                 try {

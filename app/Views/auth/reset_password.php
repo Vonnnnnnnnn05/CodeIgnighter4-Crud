@@ -9,6 +9,15 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" integrity="sha384-tViUnnbYAV00FLIhhi3v/dWt3Jxw4gZQcNoSCxCIFNJVCx7/D55/wXsrNIRANwdD" crossorigin="anonymous">
  
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+      .form-control:focus {
+            box-shadow: none;
+            outline: none;
+            border-color: #aaa;
+            /* optional: custom border color */
+            
+        }
+    </style>
 </head>
 <body class="bg-light">
 
@@ -37,12 +46,12 @@
               <input type="password" class="form-control" id="password_confirm" name="password_confirm" required>
             </div>
             <div class="d-grid">
-              <button type="submit" class="btn btn-primary">Set Password</button>
+              <button type="submit" class="btn btn-outline-dark">Set Password</button>
             </div>
           </form>
 
           <div class="mt-3 text-center">
-            <a href="<?= base_url('/') ?>">Back to login</a>
+            <a class="text-decoration-underline text-dark" href="<?= base_url('/') ?>">Back to login</a>
           </div>
         </div>
       </div>

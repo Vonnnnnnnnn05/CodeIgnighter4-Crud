@@ -167,7 +167,7 @@
       width: 350,
       padding: '1.25rem',
       showConfirmButton: false,
-      timer: 2000
+      timer: 1600
     });
   </script>
   <?php endif; ?>
